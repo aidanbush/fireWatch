@@ -17,8 +17,8 @@
       <DatePicker layoutX="524.0" layoutY="262.0" />
       <Label layoutX="524.0" layoutY="185.0" text="From" />
       <Label layoutX="524.0" layoutY="245.0" text="To" />
-      <ToggleButton fx:id="temperatureToggle" layoutX="586.0" layoutY="69.0" mnemonicParsing="false" onAction="#toggleTemperature" selected="true" text="Temperature" />
-      <ToggleButton fx:id="precipitationToggle" layoutX="587.0" layoutY="96.0" mnemonicParsing="false" onAction="#togglePrecipitation" selected="true" text="Precipitation" />
+      <ToggleButton fx:id="temperatureToggle" layoutX="586.0" layoutY="14.0" mnemonicParsing="false" onAction="#toggleTemperature" selected="true" text="Temperature" />
+      <ToggleButton fx:id="precipitationToggle" layoutX="587.0" layoutY="41.0" mnemonicParsing="false" onAction="#togglePrecipitation" selected="true" text="Precipitation" />
       <SplitPane fx:id="chartSplit" dividerPositions="0.5" orientation="VERTICAL" prefHeight="428.0" prefWidth="513.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" />
@@ -26,7 +26,5 @@
         </items>
       </SplitPane>
       <Button fx:id="updateButton" layoutX="592.0" layoutY="320.0" mnemonicParsing="false" text="Update" />
-      <ChoiceBox fx:id="regionChoice" layoutX="560.0" layoutY="29.0" prefWidth="150.0" />
-      <Label layoutX="614.0" layoutY="14.0" text="Region" />
    </children>
 </AnchorPane>
