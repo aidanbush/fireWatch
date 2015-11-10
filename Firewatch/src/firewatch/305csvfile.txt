@@ -1,0 +1,78 @@
+pre 83:
+1(0) Latitude
+2(0) Longitude
+
+8 fire class
+
+16 gen cause
+1 human 2 lightning 3 unknown 4 N/A
+
+64(63) burnt area? (units?)
+
+30,31 start Date
+40 extiguish Date
+
+post 82:
+header	(array	Name	type
+index	index)
+
+1(0) Latitude
+2(1) Longitude
+
+16 general cause
+1 human 2 lightning 3 unknown 4 N/A
+
+70(69) Start Date
+76(75) End Date
+85(84) Size Class
+92(91) burnt area(hectares)
+
+what is 15 gen cause???
+
+excel
+
+E latitude
+F longitude
+
+H general cause
+
+T start date(has time)
+AE end date(has time)
+
+AJ burnt area hectares
+
+AK sizeClass
+
+
+Questions:
+
+for pre 83
+is 8 for pre 83 size class/ does it have a size class
+is size class .4 largest at begining
+
+16 whats the code for the general causes
+1human 2 lightning 3 and 4 unknown and N/A
+
+64 what are the total area units
+hectares
+
+is 30,31 the start date
+40 extiguish day
+is 33,34 the extinguish date
+
+for post 82
+is 85 the size class
+
+
+76 extiguished date
+92 what are the total area units
+total burnt
+
+15 what do the numbers represent
+from above
+
+excel 
+what are AG,AH,AJ, are they the area burnt etc.?
+ex_hectares area burn contains area inside that did not burn for smaller fire
+
+use fire nyumber and date for unique date
