@@ -16,6 +16,8 @@ public class WildFire {
     private final String number;
     //year
     private final int year;
+    //name
+    private final String name;
     //coordinates
     private final double[] coordinates;
     //size
@@ -29,20 +31,24 @@ public class WildFire {
     //end date
     private final Date end;
     //cause
-    private final String cause;
+    private final String genCause;
+    //active cause
+    private final String activeCause;
+
     //weather
     private final String weather;
     
-    WildFire(String number, int year, double[] coordinates, double size,
-            char fClass, Date start, Date end, String cause, String weather){
+    WildFire(String number, int year, String name, double[] coordinates, double size, char fClass, Date start, Date end, String genCause, String activeCause, String weather){
         this.number = number;
         this.year = year;
+        this.name = name;
         this.coordinates = coordinates;
         this.size = size;
         this.fClass = fClass;
         this.start = start;
         this.end = end;
-        this.cause = cause;
+        this.genCause = genCause;
+        this.activeCause = activeCause;
         this.weather = weather;
         //calculate radius
         this.radius = Math.sqrt((this.size *0.01) / Math.PI);
@@ -56,6 +62,10 @@ public class WildFire {
         return year;
     }
     
+    String getName() {
+        return name;
+    }
+
     double[] getCoordinates(){
         return coordinates;
     }
@@ -80,8 +90,12 @@ public class WildFire {
         return end;
     }
     
-    String getCause(){
-        return cause;
+    String getGenCause() {
+        return genCause;
+    }
+    
+    String getActiveCause() {
+        return activeCause;
     }
     
     String getWeather(){
