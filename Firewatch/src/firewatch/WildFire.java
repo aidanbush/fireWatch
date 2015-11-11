@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class WildFire {
     //unique id
-    private int id;
+    private String id;
     //coordinates
     private float[] coordinates;
     //size
@@ -29,7 +29,7 @@ public class WildFire {
     //cause
     private String cause;
     
-    public WildFire(int id){
+    WildFire(String id){
         this.id = id;
         //this needs to be rewritten to work with the database
     }

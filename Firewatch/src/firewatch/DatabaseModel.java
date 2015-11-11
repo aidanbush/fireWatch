@@ -6,17 +6,24 @@
 package firewatch;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  *
  * @author aidan
  */
-public class GetStuff {
+public class DatabaseModel {
     
-    List<WildFire> getRange(){
-        List<WildFire> fireList = new ArrayList<>();
+    
+    List<WildFire> getRange(Date start, Date end){
+        List<WildFire> fires = ArrayList<>();
         
-        return fireList;
+        //sql query
+        
+        //parse resultSet
+        
+        return fires;
     }
+    
 }
