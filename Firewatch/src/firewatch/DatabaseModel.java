@@ -20,7 +20,7 @@ import java.util.List;
 public class DatabaseModel {
     
     
-    List<WildFire> getRangeInclusive(Connection con, Date start, Date end){
+    List<WildFire> getRangeInclusive(Connection con, Date start, Date end) throws SQLException{
         List<WildFire> fires = null;
         
         //sql query
@@ -46,13 +46,8 @@ public class DatabaseModel {
         return fires;
     }
 
-    private List<WildFire> parseResultSet(ResultSet rs) throws SQLException {
-        List<WildFire> fires = new ArrayList<>();
-        WildFire fire;
-        
-        while(!rs.isLast()){
-            //create fire
-        }
+    private List<WildFire> parseResultSet(ResultSet rs) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
