@@ -12,37 +12,69 @@ import java.util.Date;
  * @author aidan
  */
 public class WildFire {
-    //unique id
-    private int id;
+    //fire number
+    private final String number;
+    //year
+    private final int year;
+    //name
+    private final String name;
     //coordinates
-    private float[] coordinates;
+    private final double[] coordinates;
     //size
-    private float size;//km2
+    private final double size;//hectares
     //class
-    private char fClass;
+    private final char fClass;
     //radius
-    private float radius;
+    private final double radius;
     //start date
-    private Date start;
+    private final Date start;
     //end date
-    private Date end;
+    private final Date end;
     //cause
-    private String cause;
+    private final String genCause;
+    //active cause
+    private final String activeCause;
+
+    //weather
+    private final String weather;
     
-    public WildFire(int id){
-        this.id = id;
-        //this needs to be rewritten to work with the database
+    WildFire(String number, int year, String name, double[] coordinates, double size, char fClass, Date start, Date end, String genCause, String activeCause, String weather){
+        this.number = number;
+        this.year = year;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.size = size;
+        this.fClass = fClass;
+        this.start = start;
+        this.end = end;
+        this.genCause = genCause;
+        this.activeCause = activeCause;
+        this.weather = weather;
+        //calculate radius
+        this.radius = Math.sqrt((this.size *0.01) / Math.PI);
     }
     
-    float[] getCoordinates(){
+    String getNumber(){
+        return number;
+    }
+    
+    int getYear(){
+        return year;
+    }
+    
+    String getName() {
+        return name;
+    }
+
+    double[] getCoordinates(){
         return coordinates;
     }
     
-    float getSize(){
+    double getSize(){
         return size;
     }
     
-    float getRadius(){
+    double getRadius(){
         return radius;
     }
     
@@ -58,7 +90,15 @@ public class WildFire {
         return end;
     }
     
-    String getCause(){
-        return cause;
+    String getGenCause() {
+        return genCause;
+    }
+    
+    String getActiveCause() {
+        return activeCause;
+    }
+    
+    String getWeather(){
+        return weather;
     }
 }
