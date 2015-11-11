@@ -12,37 +12,59 @@ import java.util.Date;
  * @author aidan
  */
 public class WildFire {
-    //unique id
-    private String id;
+    //fire number
+    private final String number;
+    //year
+    private final int year;
     //coordinates
-    private float[] coordinates;
+    private final double[] coordinates;
     //size
-    private float size;//km2
+    private final double size;//hectares
     //class
-    private char fClass;
+    private final char fClass;
     //radius
-    private float radius;
+    private final double radius;
     //start date
-    private Date start;
+    private final Date start;
     //end date
-    private Date end;
+    private final Date end;
     //cause
-    private String cause;
+    private final String cause;
+    //weather
+    private final String weather;
     
-    WildFire(String id){
-        this.id = id;
-        //this needs to be rewritten to work with the database
+    WildFire(String number, int year, double[] coordinates, double size,
+            char fClass, Date start, Date end, String cause, String weather){
+        this.number = number;
+        this.year = year;
+        this.coordinates = coordinates;
+        this.size = size;
+        this.fClass = fClass;
+        this.start = start;
+        this.end = end;
+        this.cause = cause;
+        this.weather = weather;
+        //calculate radius
+        this.radius = Math.sqrt((this.size *0.01) / Math.PI);
     }
     
-    float[] getCoordinates(){
+    String getNumber(){
+        return number;
+    }
+    
+    int getYear(){
+        return year;
+    }
+    
+    double[] getCoordinates(){
         return coordinates;
     }
     
-    float getSize(){
+    double getSize(){
         return size;
     }
     
-    float getRadius(){
+    double getRadius(){
         return radius;
     }
     
@@ -60,5 +82,9 @@ public class WildFire {
     
     String getCause(){
         return cause;
+    }
+    
+    String getWeather(){
+        return weather;
     }
 }
