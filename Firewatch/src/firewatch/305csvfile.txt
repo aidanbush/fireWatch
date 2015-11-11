@@ -75,4 +75,4 @@ excel
 what are AG,AH,AJ, are they the area burnt etc.?
 ex_hectares area burn contains area inside that did not burn for smaller fire
 
-use fire nyumber and date for unique date
+use fire number and year for unique id
