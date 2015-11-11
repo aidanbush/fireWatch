@@ -5,6 +5,10 @@
  */
 package firewatch;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,14 +20,39 @@ import java.util.List;
 public class DatabaseModel {
     
     
-    List<WildFire> getRange(Date start, Date end){
-        List<WildFire> fires = ArrayList<>();
+    List<WildFire> getRangeInclusive(Connection con, Date start, Date end){
+        List<WildFire> fires = null;
         
         //sql query
+        Statement stmt = null;
+        String query = "SELECT * FROM filename "
+                + "WHERE fire_start_date => start AND ex_fs_date =< end";
         
-        //parse resultSet
+        try{
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            //parse resultSet
+            fires = parseResultSet(rs);
+        }
+        catch (SQLException e){
+            //do something???
+        }
+        finally{
+            if(stmt != null){
+                stmt.close();
+            }
+        }
         
         return fires;
+    }
+
+    private List<WildFire> parseResultSet(ResultSet rs) throws SQLException {
+        List<WildFire> fires = new ArrayList<>();
+        WildFire fire;
+        
+        while(!rs.isLast()){
+            //create fire
+        }
     }
     
 }
