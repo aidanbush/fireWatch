@@ -79,7 +79,9 @@ public class MainTabsController implements Initializable {
 
     @FXML
     private void pieGroupByWeather(ActionEvent event) {
-        updateWeatherData();
+        if (pieWeatherRadio.isSelected()) {
+            updateWeatherData();
+        }
     }
 
     @FXML
@@ -126,6 +128,36 @@ public class MainTabsController implements Initializable {
     }
     
     private void updateWeatherData() {
+        List<Wildfire> fires = dm.getRangeInclusive(fromDate.getValue().toString(), 
+                toDate.getValue().toString());
+        
+        Map<String, Integer> data_weather = new HashMap<>();
+        for (Wildfire wf : fires) {
+            String weather = wf.getWeather();
+            if (weather == null) continue;
+            
+            if (data_weather.containsKey(weather)) {
+                data_weather.put(weather, data_weather.get(weather) + 1);
+            } else {
+                data_weather.put(weather, 1);
+            }
+        }
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for (String weather : data_weather.keySet()) {
+            PieChart.Data pcd = new PieChart.Data(weather, data_weather.get(weather));
+            pieChartData.add(pcd);
+        }
+        
+        pieChart.setData(pieChartData);
+        
+        DecimalFormat df = new DecimalFormat("#.##");
+        pieChart.getData().stream().forEach(pcd -> {
+            Tooltip tooltip = new Tooltip();
+            tooltip.setText((int) pcd.getPieValue() + 
+                    " (" + df.format(pcd.getPieValue()/fires.size()*100) + "%)");
+            Tooltip.install(pcd.getNode(), tooltip);
+        });
+        
         
     }
 

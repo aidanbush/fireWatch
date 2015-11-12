@@ -34,7 +34,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <BarChart fx:id="barChart" barGap="0.0" layoutX="121.0" layoutY="101.0" legendVisible="false">
+                  <BarChart fx:id="barChart" barGap="0.0" layoutX="121.0" layoutY="101.0" legendVisible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
