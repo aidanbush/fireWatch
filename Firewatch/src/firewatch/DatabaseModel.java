@@ -14,7 +14,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -25,10 +24,11 @@ import java.util.logging.Logger;
  * @author aidan
  */
 public class DatabaseModel {
+    private Connection con;
     
     //TODO make constructor
-    public static Connection getConnection(String fileName) throws SQLException{
-        Connection con = null;
+    public DatabaseModel() throws SQLException{
+        con = null;
         
         try {
             Class.forName("org.sqlite.JDBC");
@@ -36,12 +36,17 @@ public class DatabaseModel {
             Logger.getLogger(ConnectSQLite.class.getName()).log(Level.SEVERE, null, ex);
         }
         con = DriverManager.getConnection("jdbc:sqlite:FireWatch.sqlite");
-        
-        return con;
     }
     
-    public static List<WildFire> getRangeInclusive(Connection con, String start, String end) throws SQLException, ParseException{
-        List<WildFire> fires = null;
+    public List<Wildfire> getFiresFromRange(String start, String end) throws SQLException, ParseException{
+        try {
+            return getRangeInclusive(start, end);
+        } catch (SQLException | ParseException e) { return null;
+        }
+    }
+    
+    private List<Wildfire> getRangeInclusive(String start, String end) throws SQLException, ParseException{
+        List<Wildfire> fires = null;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         
         //sql query
@@ -67,8 +72,8 @@ public class DatabaseModel {
         return fires;
     }
     
-    private static List<WildFire> parseResultSet(ResultSet rs) throws SQLException, ParseException {
-        List<WildFire> fires = new ArrayList<>();
+    private static List<Wildfire> parseResultSet(ResultSet rs) throws SQLException, ParseException {
+        List<Wildfire> fires = new ArrayList<>();
         
         while (rs.next()) {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
@@ -94,8 +99,8 @@ public class DatabaseModel {
             float size = rs.getFloat(11);
             String sizeClass = rs.getString(12);
             
-            WildFire fire;
-            fire = new WildFire(fireNumber, year, fireName,
+            Wildfire fire;
+            fire = new Wildfire(fireNumber, year, fireName,
                     coordinates, size, sizeClass.charAt(0), start, end, cause,
                     activity, condition);
             

@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author aidan
  */
-public class WildFire {
+public class Wildfire {
     //fire number
     private final String number;
     //year
@@ -38,7 +38,7 @@ public class WildFire {
     //weather
     private final String weather;
     
-    public WildFire(String number, int year, String name, double[] coordinates, double size, char fClass, String start, String end, String genCause, String activeCause, String weather){
+    public Wildfire(String number, int year, String name, double[] coordinates, double size, char fClass, String start, String end, String genCause, String activeCause, String weather){
         this.number = number;
         this.year = year;
         this.name = name;
