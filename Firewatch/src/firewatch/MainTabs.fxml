@@ -12,7 +12,7 @@
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
       </content>
     </Tab>
-    <Tab text="Pie">
+    <Tab text="Fires By Cause">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -30,9 +30,25 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Bar">
+      <Tab text="Fires By Year">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <BarChart fx:id="barChart" barGap="0.0" layoutX="121.0" layoutY="101.0" legendVisible="false">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+                  <RadioButton fx:id="numFiresBarRadio" layoutX="620.0" layoutY="18.0" mnemonicParsing="false" onAction="#barGroupByNumFires" text="Number of fires" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="14.0">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="barRadioGroup" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="burnedBarRadio" layoutX="623.0" layoutY="36.0" mnemonicParsing="false" onAction="#barGroupByHaBurned" text="Hectares burned" toggleGroup="$barRadioGroup" AnchorPane.rightAnchor="16.0" />
+               </children></AnchorPane>
         </content>
       </Tab>
   </tabs>
