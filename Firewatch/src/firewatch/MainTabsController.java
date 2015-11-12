@@ -7,7 +7,6 @@ package firewatch;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,9 +51,9 @@ public class MainTabsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            DatabaseModel dm = new DatabaseModel();
+            dm = new DatabaseModel();
         } catch (SQLException e) {
-            System.out.println("Error connection to database");
+            System.err.println("Error: cannot connect to database");
         }
     }    
 
@@ -86,33 +85,31 @@ public class MainTabsController implements Initializable {
     private void pieUpdateDateRange(ActionEvent event) {
         if (pieCauseRadio.isSelected()) {
             System.out.println("Clicked button!");
-            try {
-                updateCauseData();
-            } catch (Exception e) {System.out.println("Exception"); }
+            updateCauseData();
         } else if (pieWeatherRadio.isSelected()) {
             //updateWeatherData();
         }
     }
     
-    private void updateCauseData() throws SQLException, ParseException {
-        List<Wildfire> fires = dm.getFiresFromRange(fromDate.getValue().toString(), toDate.getValue().toString());
-                    
+    private void updateCauseData() {
+        List<Wildfire> fires = dm.getRangeInclusive(fromDate.getValue().toString(), 
+                toDate.getValue().toString());
+
         Map<String, Integer> data = new HashMap<>();
         for (Wildfire wf : fires) {
             String cause = wf.getGenCause();
+            if (cause == null) continue;
+            
             if (data.containsKey(cause)) {
                 data.put(cause, data.get(cause) + 1);
             } else {
                 data.put(cause, 1);
             }
         }
-        
-        System.out.println("got causes");
-        
+                
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (String cause : data.keySet()) {
             pieChartData.add(new PieChart.Data(cause, data.get(cause)));
-            System.out.println(cause + ": " + data.get(cause));
         }
         
         pieChart.setData(pieChartData);

@@ -10,12 +10,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,8 +25,6 @@ public class DatabaseModel {
     
     //TODO make constructor
     public DatabaseModel() throws SQLException{
-        con = null;
-        
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException ex) {
@@ -38,45 +33,50 @@ public class DatabaseModel {
         con = DriverManager.getConnection("jdbc:sqlite:FireWatch.sqlite");
     }
     
-    public List<Wildfire> getFiresFromRange(String start, String end) throws SQLException, ParseException{
-        try {
-            return getRangeInclusive(start, end);
-        } catch (SQLException | ParseException e) { return null;
-        }
-    }
     
-    private List<Wildfire> getRangeInclusive(String start, String end) throws SQLException, ParseException{
-        List<Wildfire> fires = null;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    public List<Wildfire> getRangeInclusive(String start, String end) {
         
         //sql query
         Statement stmt = null;
-        String query = "SELECT * FROM Wildfire " +"WHERE fire_start_date > '"
-                +start +"' AND ex_fs_date < '" +end +"'";
         
+        String query = "SELECT * FROM Wildfire " +"WHERE fire_start_date > '"
+                + start + "' AND ex_fs_date < '" + end + "'";
+        
+        System.out.println(query);
         try{
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             //parse resultSet
-            fires = parseResultSet(rs);
+            
+            List<Wildfire> fires = null;
+            try {
+                fires = parseResultSet(rs);
+            } catch (ParseException ex) {
+                Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //System.out.println("Query result size: " + fires.size());
+            return fires;
         }
         catch (SQLException e){
-            //do something???
+            System.out.println(e);
         }
         finally{
             if(stmt != null){
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         
-        return fires;
+        return null;
     }
     
     private static List<Wildfire> parseResultSet(ResultSet rs) throws SQLException, ParseException {
         List<Wildfire> fires = new ArrayList<>();
         
         while (rs.next()) {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
             String fireNumber = rs.getString(1);
             int year = rs.getInt(2);
             String fireName = rs.getString(3);
