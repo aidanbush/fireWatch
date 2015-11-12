@@ -7,7 +7,8 @@ package firewatch;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 
 /**
  * FXML Controller class
@@ -45,6 +49,14 @@ public class MainTabsController implements Initializable {
     private Button pieUpdateButton;
     
     private DatabaseModel dm;
+    @FXML
+    private BarChart<Number, Number> barChart;
+    @FXML
+    private RadioButton numFiresBarRadio;
+    @FXML
+    private ToggleGroup barRadioGroup;
+    @FXML
+    private RadioButton burnedBarRadio;
 
     /**
      * Initializes the controller class.
@@ -52,59 +64,39 @@ public class MainTabsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            DatabaseModel dm = new DatabaseModel();
+            dm = new DatabaseModel();
         } catch (SQLException e) {
-            System.out.println("Error connection to database");
+            System.err.println("Error: cannot connect to database");
         }
+        fromDate.setValue(LocalDate.now());
+        toDate.setValue(LocalDate.now());
     }    
 
     @FXML
     private void pieGroupByCause(ActionEvent event) {
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                new PieChart.Data("Grapefruit", 13),
-                new PieChart.Data("Oranges", 25),
-                new PieChart.Data("Plums", 10),
-                new PieChart.Data("Pears", 22),
-                new PieChart.Data("Apples", 30));
-        pieChart.setData(pieChartData);
+        updateCauseData();
     }
 
     @FXML
     private void pieGroupByWeather(ActionEvent event) {
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                new PieChart.Data("Megan", 323),
-                new PieChart.Data("David", 257),
-                new PieChart.Data("Aidan", 53),
-                new PieChart.Data("William", 122),
-                new PieChart.Data("Brandon", 230));
-        pieChart.setData(pieChartData);
+        if (pieWeatherRadio.isSelected()) {
+            updateWeatherData();
+        }
     }
 
     @FXML
     private void pieUpdateDateRange(ActionEvent event) {
         if (pieCauseRadio.isSelected()) {
-            System.out.println("Clicked button!");
-            try {
-                updateCauseData();
-            } catch (SQLException | ParseException ex) {System.out.println("Exception:" + ex.toString()); }
+            updateCauseData();
         } else if (pieWeatherRadio.isSelected()) {
-            //updateWeatherData();
+            updateWeatherData();
         }
     }
     
-    private void updateCauseData() throws SQLException, ParseException {
-        System.out.println("updating data");
-        String start = fromDate.getValue().toString();
-        String end = toDate.getValue().toString();
-                String query = "SELECT * FROM Wildfire " +"WHERE fire_start_date > '"
-                +start +"' AND ex_fs_date < '" +end +"'";
-        
-        System.out.println(query);
-        List<Wildfire> fires = dm.getRangeInclusive(fromDate.getValue().toString(), toDate.getValue().toString());
-                   
-        System.out.println("got data");
+    private void updateCauseData() {
+        List<Wildfire> fires = dm.getRangeInclusive(fromDate.getValue().toString(), 
+                toDate.getValue().toString());
+
         Map<String, Integer> data = new HashMap<>();
         for (Wildfire wf : fires) {
             String cause = wf.getGenCause();
@@ -116,17 +108,105 @@ public class MainTabsController implements Initializable {
                 data.put(cause, 1);
             }
         }
-        
-        System.out.println("got causes");
-        
+                
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (String cause : data.keySet()) {
-            pieChartData.add(new PieChart.Data(cause, data.get(cause)));
-            System.out.println(cause + ": " + data.get(cause));
+            PieChart.Data pcd = new PieChart.Data(cause, data.get(cause));
+            pieChartData.add(pcd);
+        }
+        
+        pieChart.setData(pieChartData);
+
+        // set tooltips for pie slices
+        DecimalFormat df = new DecimalFormat("#.##");
+        pieChart.getData().stream().forEach(pcd -> {
+            Tooltip tooltip = new Tooltip();
+            tooltip.setText((int) pcd.getPieValue() + 
+                    " (" + df.format(pcd.getPieValue()/fires.size()*100) + "%)");
+            Tooltip.install(pcd.getNode(), tooltip);
+        });
+    }
+    
+    private void updateWeatherData() {
+        List<Wildfire> fires = dm.getRangeInclusive(fromDate.getValue().toString(), 
+                toDate.getValue().toString());
+        
+        Map<String, Integer> data_weather = new HashMap<>();
+        for (Wildfire wf : fires) {
+            String weather = wf.getWeather();
+            if (weather == null) continue;
+            
+            if (data_weather.containsKey(weather)) {
+                data_weather.put(weather, data_weather.get(weather) + 1);
+            } else {
+                data_weather.put(weather, 1);
+            }
+        }
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for (String weather : data_weather.keySet()) {
+            PieChart.Data pcd = new PieChart.Data(weather, data_weather.get(weather));
+            pieChartData.add(pcd);
         }
         
         pieChart.setData(pieChartData);
         
+        DecimalFormat df = new DecimalFormat("#.##");
+        pieChart.getData().stream().forEach(pcd -> {
+            Tooltip tooltip = new Tooltip();
+            tooltip.setText((int) pcd.getPieValue() + 
+                    " (" + df.format(pcd.getPieValue()/fires.size()*100) + "%)");
+            Tooltip.install(pcd.getNode(), tooltip);
+        });
+        
+        
+    }
+
+    @FXML
+    private void barGroupByNumFires(ActionEvent event) {
+        barChart.getData().clear();
+        List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
+
+        Map<Integer, Integer> counts = new HashMap<>();
+        for (Wildfire wf : fires) {
+            int year = wf.getYear();
+            
+            if (counts.containsKey(year)) {
+                counts.put(year, counts.get(year) + 1);
+            } else {
+                counts.put(year, 1);
+            }
+        }
+                
+        XYChart.Series bcseries = new XYChart.Series();
+        counts.keySet().stream().forEach((year) -> {
+            bcseries.getData().add(new XYChart.Data(Integer.toString(year), counts.get(year)));
+        });
+        
+        barChart.getData().add(bcseries);
+    }
+
+    @FXML
+    private void barGroupByHaBurned(ActionEvent event) {
+        barChart.getData().clear();
+        List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
+
+        Map<Integer, Double> counts = new HashMap<>();
+        for (Wildfire wf : fires) {
+            int year = wf.getYear();
+            
+            if (counts.containsKey(year)) {
+                counts.put(year, counts.get(year) + wf.getSize());
+            } else {
+                counts.put(year, wf.getSize());
+            }
+        }
+                
+        XYChart.Series bcseries = new XYChart.Series();
+        counts.keySet().stream().forEach((year) -> {
+            bcseries.getData().add(new XYChart.Data(Integer.toString(year), counts.get(year)));
+        });
+        
+        barChart.getData().add(bcseries);
     }
     
 }
