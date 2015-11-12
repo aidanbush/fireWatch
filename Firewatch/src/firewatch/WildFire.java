@@ -27,9 +27,9 @@ public class WildFire {
     //radius
     private final double radius;
     //start date
-    private final Date start;
+    private final String start;
     //end date
-    private final Date end;
+    private final String end;
     //cause
     private final String genCause;
     //active cause
@@ -38,7 +38,7 @@ public class WildFire {
     //weather
     private final String weather;
     
-    public WildFire(String number, int year, String name, double[] coordinates, double size, char fClass, Date start, Date end, String genCause, String activeCause, String weather){
+    public WildFire(String number, int year, String name, double[] coordinates, double size, char fClass, String start, String end, String genCause, String activeCause, String weather){
         this.number = number;
         this.year = year;
         this.name = name;
@@ -82,11 +82,11 @@ public class WildFire {
         return fClass;
     }
     
-    public Date getStart(){
+    public String getStart(){
         return start;
     }
     
-    public Date getEnd(){
+    public String getEnd(){
         return end;
     }
     

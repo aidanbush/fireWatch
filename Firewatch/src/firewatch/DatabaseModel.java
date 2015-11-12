@@ -26,7 +26,8 @@ import java.util.logging.Logger;
  */
 public class DatabaseModel {
     
-    Connection getConnection(String fileName) throws SQLException{
+    //TODO make constructor
+    public static Connection getConnection(String fileName) throws SQLException{
         Connection con = null;
         
         try {
@@ -39,13 +40,14 @@ public class DatabaseModel {
         return con;
     }
     
-    List<WildFire> getRangeInclusive(Connection con, Date start, Date end) throws SQLException, ParseException{
+    public static List<WildFire> getRangeInclusive(Connection con, String start, String end) throws SQLException, ParseException{
         List<WildFire> fires = null;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         
         //sql query
         Statement stmt = null;
-        String query = "SELECT * FROM Wildfire "
-                +"WHERE fire_start_date => " +start +" AND ex_fs_date =< " +end;
+        String query = "SELECT * FROM Wildfire " +"WHERE fire_start_date > '"
+                +start +"' AND ex_fs_date < '" +end +"'";
         
         try{
             stmt = con.createStatement();
@@ -64,8 +66,8 @@ public class DatabaseModel {
         
         return fires;
     }
-
-    private List<WildFire> parseResultSet(ResultSet rs) throws SQLException, ParseException {
+    
+    private static List<WildFire> parseResultSet(ResultSet rs) throws SQLException, ParseException {
         List<WildFire> fires = new ArrayList<>();
         
         while (rs.next()) {
@@ -79,15 +81,15 @@ public class DatabaseModel {
             
             String cause = rs.getString(6);
             String activity = rs.getString(7);
-            Date start = null, end = null;
+            String start = null, end = null;
             
             if (rs.getString(8) != null){
-                start = df.parse(rs.getString(8));
+                start = rs.getString(8);
             }
             String condition = rs.getString(9);
             
             if (rs.getString(10) != null){
-                end = df.parse(rs.getString(10));
+                end = rs.getString(10);
             }
             float size = rs.getFloat(11);
             String sizeClass = rs.getString(12);
