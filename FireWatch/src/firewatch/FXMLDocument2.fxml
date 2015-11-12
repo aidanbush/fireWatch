@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="firewatch.FXMLDocument2Controller">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0">
+         <image>
+            <Image url="@65qh3Oc.jpg" />
+         </image>
+      </ImageView>
+      <DatePicker fx:id="datePicker" layoutX="203.0" layoutY="74.0" onAction="#DateChoosen" />
+      <CheckBox fx:id="checkbox1" layoutX="237.0" layoutY="125.0" mnemonicParsing="false" onAction="#CheckBoxes" text="Precipitation" textFill="#f0f2f0" />
+      <CheckBox fx:id="checkbox2" layoutX="236.0" layoutY="166.0" mnemonicParsing="false" onAction="#CheckBoxes" text="Temperature" textFill="#f8f5f5" />
+      <CheckBox fx:id="checkbox3" layoutX="238.0" layoutY="211.0" mnemonicParsing="false" onAction="#CheckBoxes" text="Wind Conditions" textFill="#f8f5f5" />
+      <ChoiceBox layoutX="214.0" layoutY="281.0" prefWidth="150.0" />
+      <Label layoutX="267.0" layoutY="264.0" text="Region" textFill="WHITE" />
+      <Button layoutX="257.0" layoutY="327.0" mnemonicParsing="false" onAction="#CreateTables" text="Submit" />
+   </children>
+</AnchorPane>

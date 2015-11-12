@@ -5,6 +5,7 @@
  */
 package firewatch;
 
+import java.sql.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +20,7 @@ public class FireWatch extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("SplitLineChart.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("MainTabs.fxml"));
         
         Scene scene = new Scene(root);
         

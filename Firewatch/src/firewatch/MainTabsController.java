@@ -6,6 +6,11 @@
 package firewatch;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +18,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
@@ -30,20 +37,25 @@ public class MainTabsController implements Initializable {
     private ToggleGroup pieRadioGroup;
     @FXML
     private RadioButton pieWeatherRadio;
+    @FXML
+    private DatePicker fromDate;
+    @FXML
+    private DatePicker toDate;
+    @FXML
+    private Button pieUpdateButton;
+    
+    private DatabaseModel dm;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                new PieChart.Data("Grapefruit", 13),
-                new PieChart.Data("Oranges", 25),
-                new PieChart.Data("Plums", 10),
-                new PieChart.Data("Pears", 22),
-                new PieChart.Data("Apples", 30));
-        pieChart.setData(pieChartData);
+        try {
+            DatabaseModel dm = new DatabaseModel();
+        } catch (SQLException e) {
+            System.out.println("Error connection to database");
+        }
     }    
 
     @FXML
@@ -68,6 +80,43 @@ public class MainTabsController implements Initializable {
                 new PieChart.Data("William", 122),
                 new PieChart.Data("Brandon", 230));
         pieChart.setData(pieChartData);
+    }
+
+    @FXML
+    private void pieUpdateDateRange(ActionEvent event) {
+        if (pieCauseRadio.isSelected()) {
+            System.out.println("Clicked button!");
+            try {
+                updateCauseData();
+            } catch (Exception e) {System.out.println("Exception"); }
+        } else if (pieWeatherRadio.isSelected()) {
+            //updateWeatherData();
+        }
+    }
+    
+    private void updateCauseData() throws SQLException, ParseException {
+        List<Wildfire> fires = dm.getFiresFromRange(fromDate.getValue().toString(), toDate.getValue().toString());
+                    
+        Map<String, Integer> data = new HashMap<>();
+        for (Wildfire wf : fires) {
+            String cause = wf.getGenCause();
+            if (data.containsKey(cause)) {
+                data.put(cause, data.get(cause) + 1);
+            } else {
+                data.put(cause, 1);
+            }
+        }
+        
+        System.out.println("got causes");
+        
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for (String cause : data.keySet()) {
+            pieChartData.add(new PieChart.Data(cause, data.get(cause)));
+            System.out.println(cause + ": " + data.get(cause));
+        }
+        
+        pieChart.setData(pieChartData);
+        
     }
     
 }
