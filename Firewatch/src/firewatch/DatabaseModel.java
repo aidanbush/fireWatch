@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author aidan
  */
 public class DatabaseModel {
-    private Connection con;
+    private final Connection con;
     
     //TODO make constructor
     public DatabaseModel() throws SQLException{
@@ -40,9 +40,9 @@ public class DatabaseModel {
         Statement stmt = null;
         
         String query = "SELECT * FROM Wildfire " +"WHERE fire_start_date > '"
-                + start + "' AND ex_fs_date < '" + end + "'";
+                + start + "' AND fire_start_date < '" + end + "'";
         
-        System.out.println(query);
+
         try{
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -54,7 +54,6 @@ public class DatabaseModel {
             } catch (ParseException ex) {
                 Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //System.out.println("Query result size: " + fires.size());
             return fires;
         }
         catch (SQLException e){

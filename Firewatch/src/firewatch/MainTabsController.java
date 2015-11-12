@@ -7,6 +7,8 @@ package firewatch;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 
 /**
  * FXML Controller class
@@ -55,30 +58,18 @@ public class MainTabsController implements Initializable {
         } catch (SQLException e) {
             System.err.println("Error: cannot connect to database");
         }
+        fromDate.setValue(LocalDate.now());
+        toDate.setValue(LocalDate.now());
     }    
 
     @FXML
     private void pieGroupByCause(ActionEvent event) {
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                new PieChart.Data("Grapefruit", 13),
-                new PieChart.Data("Oranges", 25),
-                new PieChart.Data("Plums", 10),
-                new PieChart.Data("Pears", 22),
-                new PieChart.Data("Apples", 30));
-        pieChart.setData(pieChartData);
+        updateCauseData();
     }
 
     @FXML
     private void pieGroupByWeather(ActionEvent event) {
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                new PieChart.Data("Megan", 323),
-                new PieChart.Data("David", 257),
-                new PieChart.Data("Aidan", 53),
-                new PieChart.Data("William", 122),
-                new PieChart.Data("Brandon", 230));
-        pieChart.setData(pieChartData);
+        //updateWeatherData();
     }
 
     @FXML
@@ -109,11 +100,20 @@ public class MainTabsController implements Initializable {
                 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (String cause : data.keySet()) {
-            pieChartData.add(new PieChart.Data(cause, data.get(cause)));
+            PieChart.Data pcd = new PieChart.Data(cause, data.get(cause));
+            pieChartData.add(pcd);
         }
         
         pieChart.setData(pieChartData);
-        
+
+        // set tooltips for pie slices
+        DecimalFormat df = new DecimalFormat("#.##");
+        pieChart.getData().stream().forEach(pcd -> {
+            Tooltip tooltip = new Tooltip();
+            tooltip.setText((int) pcd.getPieValue() + 
+                    " (" + df.format(pcd.getPieValue()/fires.size()*100) + "%)");
+            Tooltip.install(pcd.getNode(), tooltip);
+        });
     }
     
 }
