@@ -1,2 +1,0 @@
-# fireWatch
-watch the fire
