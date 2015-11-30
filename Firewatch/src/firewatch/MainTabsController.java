@@ -6,6 +6,7 @@
 package firewatch;
 
 import java.net.URL;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -48,6 +49,10 @@ public class MainTabsController implements Initializable {
     private DatePicker fromDate;
     @FXML
     private DatePicker toDate;
+    @FXML
+    private DatePicker fromDate2;
+    @FXML
+    private DatePicker toDate2;
     @FXML
     private Button pieUpdateButton;
     
@@ -92,6 +97,18 @@ public class MainTabsController implements Initializable {
         final URL urlGoogleMaps = getClass().getResource("GoogleMapsV3.html");
         webEngine.load(urlGoogleMaps.toExternalForm());
         webEngine.setJavaScriptEnabled(true);
+   
+    }
+    @FXML
+    private void submitMapDates(ActionEvent event) {
+        List<Wildfire> fires = dm.getRangeInclusive(fromDate2.getValue().toString(), 
+        toDate2.getValue().toString());
+        Map<Double, double[]> fire_plots = new HashMap<>();
+        fires.stream().forEach((wf) -> {
+            Double size = wf.getSize();
+            double[] coord = wf.getCoordinates();
+            fire_plots.put(size, coord);
+        });
     }
     
     @FXML
