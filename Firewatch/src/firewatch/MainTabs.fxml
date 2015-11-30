@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -9,7 +10,10 @@
   <tabs>
     <Tab text="Map">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <WebView fx:id="mapWebView" layoutX="14.0" layoutY="14.0" prefHeight="451.0" prefWidth="718.0" />
+               </children></AnchorPane>
       </content>
     </Tab>
     <Tab text="Fires By Cause">
@@ -49,6 +53,37 @@
                   </RadioButton>
                   <RadioButton fx:id="burnedBarRadio" layoutX="623.0" layoutY="36.0" mnemonicParsing="false" onAction="#barGroupByHaBurned" text="Hectares burned" toggleGroup="$barRadioGroup" AnchorPane.rightAnchor="16.0" />
                </children></AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="Fire List">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <DatePicker fx:id="fireListFromDate" layoutX="553.0" layoutY="59.0" promptText="FromDatePicker" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0" />
+                  <DatePicker fx:id="fireListToDate" layoutX="553.0" layoutY="134.0" promptText="ToDatePicker" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="120.0" />
+                  <Button fx:id="fireListUpdateButton" layoutX="656.0" layoutY="182.0" mnemonicParsing="false" text="Update" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="160.0" />
+                  <TableView fx:id="fireListTableView" layoutX="14.0" layoutY="27.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="20.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="Fire number" />
+                      <TableColumn prefWidth="50.0" text="Year" />
+                        <TableColumn prefWidth="72.0" text="Name" />
+                        <TableColumn prefWidth="75.0" text="Size" />
+                        <TableColumn prefWidth="79.0" text="Class" />
+                        <TableColumn prefWidth="71.0" text="Start" />
+                        <TableColumn prefWidth="81.0" text="End" />
+                        <TableColumn prefWidth="75.0" text="Cause">
+                           <columns>
+                              <TableColumn prefWidth="96.0" text="General" />
+                           </columns>
+                        </TableColumn>
+                        <TableColumn prefWidth="75.0" text="Weather" />
+                        <TableColumn prefWidth="92.0" text="Active" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="626.0" layoutY="20.0" text="From" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="20.0" />
+                  <Label layoutX="626.0" layoutY="96.0" text="To" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="90.0" />
+               </children>
+            </AnchorPane>
         </content>
       </Tab>
   </tabs>

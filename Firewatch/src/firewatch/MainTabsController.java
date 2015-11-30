@@ -24,8 +24,11 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 /**
  * FXML Controller class
@@ -57,6 +60,20 @@ public class MainTabsController implements Initializable {
     private ToggleGroup barRadioGroup;
     @FXML
     private RadioButton burnedBarRadio;
+    
+    //fire list tab
+    @FXML
+    private DatePicker fireListFromDate;
+    @FXML
+    private DatePicker fireListToDate;
+    @FXML
+    private Button fireListUpdateButton;
+    @FXML
+    private TableView<Wildfire> fireListTableView;
+    
+    @FXML
+    private WebView mapWebView;
+    WebEngine webEngine;
 
     /**
      * Initializes the controller class.
@@ -70,8 +87,13 @@ public class MainTabsController implements Initializable {
         }
         fromDate.setValue(LocalDate.now());
         toDate.setValue(LocalDate.now());
-    }    
-
+        //set other from and to dates
+        webEngine = mapWebView.getEngine();
+        final URL urlGoogleMaps = getClass().getResource("GoogleMapsV3.html");
+        webEngine.load(urlGoogleMaps.toExternalForm());
+        webEngine.setJavaScriptEnabled(true);
+    }
+    
     @FXML
     private void pieGroupByCause(ActionEvent event) {
         updateCauseData();
@@ -208,5 +230,24 @@ public class MainTabsController implements Initializable {
         
         barChart.getData().add(bcseries);
     }
+    
+    //fireList tab
+    @FXML
+    private void fireListUpdate(ActionEvent event){
+        //clear elements
+        
+        //gets the list of fires
+        List<Wildfire> fires = dm.getRangeInclusive(
+                fireListFromDate.getValue().toString(),
+                fireListToDate.getValue().toString());
+        
+        //add to the table
+        for(Wildfire fire : fires){
+            //fireListTableView.
+            //fireListTableView;
+            
+        }
+    }
+    
     
 }
