@@ -12,9 +12,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -22,6 +25,7 @@ import java.util.logging.Logger;
  */
 public class DatabaseModel {
     private final Connection con;
+    private ObservableList<Wildfire> fires;
     
     //TODO make constructor
     public DatabaseModel() throws SQLException{
@@ -31,6 +35,7 @@ public class DatabaseModel {
             Logger.getLogger(ConnectSQLite.class.getName()).log(Level.SEVERE, null, ex);
         }
         con = DriverManager.getConnection("jdbc:sqlite:FireWatch.sqlite");
+        fires = FXCollections.observableArrayList();
     }
     
     
@@ -42,19 +47,17 @@ public class DatabaseModel {
         String query = "SELECT * FROM Wildfire " +"WHERE fire_start_date > '"
                 + start + "' AND fire_start_date < '" + end + "'";
         
-
         try{
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             //parse resultSet
             
-            List<Wildfire> fires = null;
             try {
                 fires = parseResultSet(rs);
+                return Collections.unmodifiableList(fires);
             } catch (ParseException ex) {
                 Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
             }
-            return fires;
         }
         catch (SQLException e){
             System.out.println(e);
@@ -68,12 +71,11 @@ public class DatabaseModel {
                 }
             }
         }
-        
         return null;
     }
     
-    private static List<Wildfire> parseResultSet(ResultSet rs) throws SQLException, ParseException {
-        List<Wildfire> fires = new ArrayList<>();
+    private static ObservableList<Wildfire> parseResultSet(ResultSet rs) throws SQLException, ParseException {
+        ObservableList<Wildfire> fires = FXCollections.observableArrayList();
         
         while (rs.next()) {
             String fireNumber = rs.getString(1);
@@ -108,5 +110,8 @@ public class DatabaseModel {
         rs.close();
         return fires;
     }
-    
+
+    public ObservableList<Wildfire> getFires() {
+        return fires;
+    }
 }
