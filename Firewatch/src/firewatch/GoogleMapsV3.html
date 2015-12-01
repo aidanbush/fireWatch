@@ -18,7 +18,8 @@
   <body>
     <div id="map"></div>
     <script>
-var locations = {
+/*
+    var locations = {
     one: {
         center: {lat: 54.48, lng: -115.2},
         size: 100
@@ -26,16 +27,37 @@ var locations = {
     two: {center: {lat: 55, lng: -114.9},
         size: 50
     }
-};
+};*/
+    
+    //var locations = new Array();
+    
+    var map;
+    
+    function addLocation(lat, long , sz) {
+        var location = {center: {lat: lat, lng: long}, size: sz};
+        //locations.push(location);
+        var marker = new google.maps.Marker({
+            /*stokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            */
+            map: map,
+            position: location.center,
+            //radius: location.size
+        });
+    }
+    
 function initMap() {
   var myLatLng = {lat: 54.5010052322, lng: -115.0000259};
 
-  var map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById('map'), {
     zoom: 5,
     center: myLatLng
   });
   for (var local in locations) {
-      var cirle = new google.maps.Circle({
+      var circle = new google.maps.Circle({
           stokeColor: '#FF0000',
           strokeOpacity: 0.8,
           strokeWeight: 2,
