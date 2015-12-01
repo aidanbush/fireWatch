@@ -110,7 +110,6 @@ public class MainTabsController implements Initializable {
             Double size = wf.getSize();
             double[] coord = wf.getCoordinates();
             fire_plots.put(size, coord);
-            //System.out.println("" + coord[0] + " " + coord[1] + ", " + size);
             webEngine.executeScript("addLocation(" + coord[0] + "," + coord[1] + "," + size + ")");
         });
     }
