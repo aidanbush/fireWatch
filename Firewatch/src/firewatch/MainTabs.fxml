@@ -23,17 +23,12 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <PieChart fx:id="pieChart" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="230.0" AnchorPane.topAnchor="10.0" />
+                  <PieChart fx:id="pieChart" prefHeight="453.0" prefWidth="631.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="10.0" />
                   <RadioButton fx:id="pieCauseRadio" layoutX="521.0" layoutY="14.0" mnemonicParsing="false" onAction="#pieGroupByCause" selected="true" text="Cause" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="14.0">
                      <toggleGroup>
                         <ToggleGroup fx:id="pieRadioGroup" />
                      </toggleGroup></RadioButton>
                   <RadioButton fx:id="pieWeatherRadio" layoutX="521.0" layoutY="38.0" mnemonicParsing="false" onAction="#pieGroupByWeather" text="Weather" toggleGroup="$pieRadioGroup" AnchorPane.rightAnchor="3.0" />
-                  <DatePicker fx:id="fromDate" layoutY="232.0" AnchorPane.rightAnchor="10.0" />
-                  <DatePicker fx:id="toDate" layoutY="289.0" AnchorPane.rightAnchor="10.0" />
-                  <Label layoutY="210.0" text="From" AnchorPane.rightAnchor="100.0" />
-                  <Label layoutY="272.0" text="To" AnchorPane.rightAnchor="100.0" />
-                  <Button fx:id="pieUpdateButton" layoutY="345.0" mnemonicParsing="false" onAction="#pieUpdateDateRange" text="Update" AnchorPane.rightAnchor="50.0" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -41,7 +36,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <BarChart fx:id="barChart" barGap="0.0" layoutX="121.0" layoutY="101.0" legendVisible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="230.0" AnchorPane.topAnchor="10.0">
+                  <BarChart fx:id="barChart" barGap="0.0" layoutX="121.0" layoutY="101.0" legendVisible="false" prefHeight="452.0" prefWidth="579.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="152.0" AnchorPane.topAnchor="10.0">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -49,7 +44,7 @@
                       <NumberAxis side="LEFT" />
                     </yAxis>
                   </BarChart>
-                  <RadioButton fx:id="numFiresBarRadio" layoutX="620.0" layoutY="18.0" mnemonicParsing="false" onAction="#barGroupByNumFires" text="Number of fires" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="14.0">
+                  <RadioButton fx:id="numFiresBarRadio" layoutX="598.0" layoutY="14.0" mnemonicParsing="false" onAction="#barGroupByNumFires" text="Number of fires" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="14.0">
                      <toggleGroup>
                         <ToggleGroup fx:id="barRadioGroup" />
                      </toggleGroup>
@@ -62,10 +57,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <DatePicker fx:id="fireListFromDate" layoutX="553.0" layoutY="59.0" promptText="FromDatePicker" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0" />
-                  <DatePicker fx:id="fireListToDate" layoutX="553.0" layoutY="134.0" promptText="ToDatePicker" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="120.0" />
-                  <Button fx:id="fireListUpdateButton" layoutX="656.0" layoutY="182.0" mnemonicParsing="false" text="Update" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="160.0" />
-                  <TableView fx:id="fireListTableView" layoutX="14.0" layoutY="27.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="20.0">
+                  <TableView fx:id="fireListTableView" layoutX="14.0" layoutY="27.0" prefHeight="433.0" prefWidth="714.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="20.0">
                     <columns>
                       <TableColumn prefWidth="75.0" text="Fire number" />
                       <TableColumn prefWidth="50.0" text="Year" />
@@ -83,8 +75,6 @@
                         <TableColumn prefWidth="92.0" text="Active" />
                     </columns>
                   </TableView>
-                  <Label layoutX="626.0" layoutY="20.0" text="From" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="20.0" />
-                  <Label layoutX="626.0" layoutY="96.0" text="To" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="90.0" />
                </children>
             </AnchorPane>
         </content>

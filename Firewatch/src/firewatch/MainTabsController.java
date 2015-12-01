@@ -90,8 +90,8 @@ public class MainTabsController implements Initializable {
         } catch (SQLException e) {
             System.err.println("Error: cannot connect to database");
         }
-        fromDate.setValue(LocalDate.now());
-        toDate.setValue(LocalDate.now());
+        fromDate2.setValue(LocalDate.now());
+        toDate2.setValue(LocalDate.now());
         //set other from and to dates
         webEngine = mapWebView.getEngine();
         final URL urlGoogleMaps = getClass().getResource("GoogleMapsV3.html");
@@ -132,12 +132,12 @@ public class MainTabsController implements Initializable {
             updateCauseData();
         } else if (pieWeatherRadio.isSelected()) {
             updateWeatherData();
-        }
+        } 
     }
     
     private void updateCauseData() {
-        List<Wildfire> fires = dm.getRangeInclusive(fromDate.getValue().toString(), 
-                toDate.getValue().toString());
+        List<Wildfire> fires = dm.getRangeInclusive(fromDate2.getValue().toString(), 
+                toDate2.getValue().toString());
 
         Map<String, Integer> data = new HashMap<>();
         for (Wildfire wf : fires) {
@@ -170,8 +170,8 @@ public class MainTabsController implements Initializable {
     }
     
     private void updateWeatherData() {
-        List<Wildfire> fires = dm.getRangeInclusive(fromDate.getValue().toString(), 
-                toDate.getValue().toString());
+        List<Wildfire> fires = dm.getRangeInclusive(fromDate2.getValue().toString(), 
+                toDate2.getValue().toString());
         
         Map<String, Integer> data_weather = new HashMap<>();
         for (Wildfire wf : fires) {
