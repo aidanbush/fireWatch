@@ -19,6 +19,7 @@
     <div id="map"></div>
     <script>  
     var map;
+    var markers = new Array();
     
     function addLocation(lat, long , sz) {
         var location = {center: {lat: lat, lng: long}, size: sz};
@@ -27,6 +28,14 @@
             map: map,
             position: location.center,
         });
+        markers.push(marker);
+    }
+    
+    function deleteMarkers() {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers = new Array();
     }
     
 function initMap() {
