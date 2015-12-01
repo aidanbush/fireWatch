@@ -54,10 +54,10 @@ public class DatabaseModel {
             
             try {
                 fires = parseResultSet(rs);
-                return Collections.unmodifiableList(fires);
             } catch (ParseException ex) {
                 Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
             }
+            return Collections.unmodifiableList(fires);
         }
         catch (SQLException e){
             System.out.println(e);
