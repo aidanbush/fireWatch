@@ -105,6 +105,7 @@ public class MainTabsController implements Initializable {
         List<Wildfire> fires = dm.getRangeInclusive(fromDate2.getValue().toString(), 
         toDate2.getValue().toString());
         Map<Double, double[]> fire_plots = new HashMap<>();
+        webEngine.executeScript("deleteMarkers()");
         fires.stream().forEach((wf) -> {
             Double size = wf.getSize();
             double[] coord = wf.getCoordinates();
