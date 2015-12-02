@@ -9,6 +9,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,11 +174,21 @@ public class MainTabsController implements Initializable {
         
         fires = dm.getFires();
         fireListTableView.setItems(fires);
-        /*fires.addListener((ListChangeListener.Change c) -> {
-            if(c.wasAdded()){
-                //add to map
-            }
-        });*/
+        fires.addListener((ListChangeListener.Change<? extends Wildfire> c) -> {
+            while (c.next()) {
+                /*if(c.wasAdded()){
+                    //update map
+                    System.out.println("stuff");
+                }*/
+                List<? extends Wildfire> addedSubList = c.getAddedSubList();
+
+                for(int i =0; i <addedSubList.size(); i++){
+                    //update map
+                    System.out.println("stuff: " +i);
+                    System.out.println(Arrays.toString(addedSubList.get(i).getCoordinates()));
+                }
+             }
+        });
     }
     @FXML
     private void submitMapDates(ActionEvent event) {
