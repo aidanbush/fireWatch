@@ -6,7 +6,6 @@
 package firewatch;
 
 import java.net.URL;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -14,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,12 +24,13 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -67,30 +68,27 @@ public class MainTabsController implements Initializable {
     private ToggleGroup barRadioGroup;
     @FXML
     private RadioButton burnedBarRadio;
+    @FXML 
+    private Tab fireCause;
+    @FXML
+    private Tab fireList;
+    @FXML
+    private Tab fireYear;
+    @FXML
+    private TabPane tabs;
+    @FXML
+    private Label noFire;
     
+    
+    //fire list tab
+    @FXML
+    private DatePicker fireListFromDate;
+    @FXML
+    private DatePicker fireListToDate;
+    @FXML
+    private Button fireListUpdateButton;
     @FXML
     private TableView<Wildfire> fireListTableView;
-    @FXML
-    private TableColumn<Wildfire, String> fireNumberColumn;
-    @FXML
-    private TableColumn<Wildfire, String> yearColumn;
-    @FXML
-    private TableColumn<Wildfire, String> nameColumn;
-    @FXML
-    private TableColumn<Wildfire, String> sizeColumn;
-    @FXML
-    private TableColumn<Wildfire, String> fireClassColumn;
-    @FXML
-    private TableColumn<Wildfire, String> startDateColumn;
-    @FXML
-    private TableColumn<Wildfire, String> endDateColumn;
-    @FXML
-    private TableColumn<Wildfire, String> weatherColumn;
-    @FXML
-    private TableColumn<Wildfire, String> activeCauseColumn;
-    @FXML
-    private TableColumn<Wildfire, String> generalCauseColumn;
-
     
     @FXML
     private WebView mapWebView;
@@ -108,38 +106,52 @@ public class MainTabsController implements Initializable {
         }
         fromDate2.setValue(LocalDate.now());
         toDate2.setValue(LocalDate.now());
-        //set other from and to dates
         webEngine = mapWebView.getEngine();
         final URL urlGoogleMaps = getClass().getResource("GoogleMapsV3.html");
         webEngine.load(urlGoogleMaps.toExternalForm());
         webEngine.setJavaScriptEnabled(true);
-        
-        //setup Columns
-        fireNumberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
-        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
-        fireClassColumn.setCellValueFactory(new PropertyValueFactory<>("fClass"));
-        startDateColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
-        endDateColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
-        weatherColumn.setCellValueFactory(new PropertyValueFactory<>("weather"));
-        activeCauseColumn.setCellValueFactory(new PropertyValueFactory<>("activeCause"));
-        generalCauseColumn.setCellValueFactory(new PropertyValueFactory<>("genCause"));
+
+        tabs.getSelectionModel().selectedItemProperty().addListener(
+            (ObservableValue<? extends Tab> ov, Tab t, Tab t1) -> {
+            switch (t1.getId()) {
+                case "fireCause":
+                    if (pieWeatherRadio.isSelected()) {
+                        updateWeatherData();
+                    }
+                    else {
+                        updateCauseData();
+                    }
+                    break;
+                case "fireYear":
+                    barGroupByNumFires();
+                    break;
+                case "fireList":
+                    break;
+                default:
+                    break;
+            }
+        }); 
+   
     }
     @FXML
     private void submitMapDates(ActionEvent event) {
         List<Wildfire> fires = dm.getRangeInclusive(fromDate2.getValue().toString(), 
         toDate2.getValue().toString());
         Map<Double, double[]> fire_plots = new HashMap<>();
-        webEngine.executeScript("deleteMarkers()");
         fires.stream().forEach((wf) -> {
+            String cause = wf.getGenCause();
             Double size = wf.getSize();
             double[] coord = wf.getCoordinates();
             fire_plots.put(size, coord);
             webEngine.executeScript("addLocation(" + coord[0] + "," + coord[1] + "," + size + ")");
         });
-        fireListUpdate();
+        if (fire_plots.isEmpty()) {
+            noFire.setText("No fires");
+        } 
+    
+
     }
+
     
     @FXML
     private void pieGroupByCause(ActionEvent event) {
@@ -231,7 +243,7 @@ public class MainTabsController implements Initializable {
     }
 
     @FXML
-    private void barGroupByNumFires(ActionEvent event) {
+    private void barGroupByNumFires() {
         barChart.getData().clear();
         List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
 
@@ -279,20 +291,21 @@ public class MainTabsController implements Initializable {
     }
     
     //fireList tab
-    //@FXML
-    private void fireListUpdate(/*ActionEvent event*/){
+    @FXML
+    private void fireListUpdate(ActionEvent event){
         //clear elements
-        ObservableList<Wildfire> oFire = FXCollections.observableArrayList();
+        
         //gets the list of fires
         List<Wildfire> fires = dm.getRangeInclusive(
-                fromDate2.getValue().toString(),
-                toDate2.getValue().toString());
+                fireListFromDate.getValue().toString(),
+                fireListToDate.getValue().toString());
         
         //add to the table
-        for(int i =0; i < fires.size(); i++){
-            oFire.add(fires.get(i));
+        for(Wildfire fire : fires){
+            //fireListTableView.
+            //fireListTableView;
+            
         }
-        fireListTableView.setItems(oFire);
     }
     
     
