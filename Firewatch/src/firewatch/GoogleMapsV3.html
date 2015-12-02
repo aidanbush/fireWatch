@@ -21,13 +21,15 @@
     var map;
     var markers = new Array();
     
-    function addLocation(lat, long , sz) {
-        var location = {center: {lat: lat, lng: long}, size: sz};
-        //locations.push(location);
+    function addLocation(lat, long , tl) {
+        var location = {center: {lat: lat, lng: long}, title: tl};
+        var image = 'http://findicons.com/files/icons/2203/alcohol/32/burn.png';
         var marker = new google.maps.Marker({
             map: map,
             position: location.center,
-            title: location.sizes//test comment
+            animation: google.maps.Animation.DROP,
+            title: tl.toString(),
+            icon: image
         });
         markers.push(marker);
     }

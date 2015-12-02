@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="506.0" prefWidth="741.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="firewatch.MainTabsController">
+<TabPane fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="506.0" prefWidth="741.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="firewatch.MainTabsController">
   <tabs>
     <Tab text="Map">
       <content>
@@ -16,10 +17,15 @@
                   <DatePicker fx:id="fromDate2" layoutX="114.0" layoutY="8.0" />
                   <DatePicker fx:id="toDate2" layoutX="319.0" layoutY="8.0" />
                   <Button fx:id="submit" layoutX="525.0" layoutY="8.0" mnemonicParsing="false" onAction="#submitMapDates" text="Submit" />
+                  <Label fx:id="noFire" layoutX="291.0" layoutY="48.0" underline="true">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="Fires By Cause">
+    <Tab fx:id="fireCause" text="Fires By Cause">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -32,7 +38,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Fires By Year">
+      <Tab fx:id="fireYear" text="Fires By Year">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -44,7 +50,7 @@
                       <NumberAxis side="LEFT" />
                     </yAxis>
                   </BarChart>
-                  <RadioButton fx:id="numFiresBarRadio" layoutX="598.0" layoutY="14.0" mnemonicParsing="false" onAction="#barGroupByNumFires" text="Number of fires" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="14.0">
+                  <RadioButton fx:id="numFiresBarRadio" layoutX="598.0" layoutY="14.0" mnemonicParsing="false" onAction="#barGroupByNumFires" selected="true" text="Number of fires" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="14.0">
                      <toggleGroup>
                         <ToggleGroup fx:id="barRadioGroup" />
                      </toggleGroup>
