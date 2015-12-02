@@ -95,9 +95,12 @@ public class MainTabsController implements Initializable {
     @FXML
     private WebView mapWebView;
     WebEngine webEngine;
+   
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -180,22 +183,18 @@ public class MainTabsController implements Initializable {
                 toDate2.getValue().toString());
 
         Map<String, Integer> data = new HashMap<>();
-        for (Wildfire wf : fires) {
-            String cause = wf.getGenCause();
-            if (cause == null) continue;
-            
+        fires.stream().map((wf) -> wf.getGenCause()).filter((cause) -> !(cause == null)).forEach((cause) -> {
             if (data.containsKey(cause)) {
                 data.put(cause, data.get(cause) + 1);
             } else {
                 data.put(cause, 1);
             }
-        }
+        });
                 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-        for (String cause : data.keySet()) {
-            PieChart.Data pcd = new PieChart.Data(cause, data.get(cause));
+        data.keySet().stream().map((cause) -> new PieChart.Data(cause, data.get(cause))).forEach((pcd) -> {
             pieChartData.add(pcd);
-        }
+        });
         
         pieChart.setData(pieChartData);
 
@@ -214,21 +213,17 @@ public class MainTabsController implements Initializable {
                 toDate2.getValue().toString());
         
         Map<String, Integer> data_weather = new HashMap<>();
-        for (Wildfire wf : fires) {
-            String weather = wf.getWeather();
-            if (weather == null) continue;
-            
+        fires.stream().map((wf) -> wf.getWeather()).filter((weather) -> !(weather == null)).forEach((weather) -> {
             if (data_weather.containsKey(weather)) {
                 data_weather.put(weather, data_weather.get(weather) + 1);
             } else {
                 data_weather.put(weather, 1);
             }
-        }
+        });
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-        for (String weather : data_weather.keySet()) {
-            PieChart.Data pcd = new PieChart.Data(weather, data_weather.get(weather));
+        data_weather.keySet().stream().map((weather) -> new PieChart.Data(weather, data_weather.get(weather))).forEach((pcd) -> {
             pieChartData.add(pcd);
-        }
+        });
         
         pieChart.setData(pieChartData);
         
@@ -249,15 +244,13 @@ public class MainTabsController implements Initializable {
         List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
 
         Map<Integer, Integer> counts = new HashMap<>();
-        for (Wildfire wf : fires) {
-            int year = wf.getYear();
-            
+        fires.stream().map((wf) -> wf.getYear()).forEach((year) -> {
             if (counts.containsKey(year)) {
                 counts.put(year, counts.get(year) + 1);
             } else {
                 counts.put(year, 1);
             }
-        }
+        });
                 
         XYChart.Series bcseries = new XYChart.Series();
         counts.keySet().stream().forEach((year) -> {
@@ -273,7 +266,7 @@ public class MainTabsController implements Initializable {
         List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
 
         Map<Integer, Double> counts = new HashMap<>();
-        for (Wildfire wf : fires) {
+        fires.stream().forEach((wf) -> {
             int year = wf.getYear();
             
             if (counts.containsKey(year)) {
@@ -281,7 +274,7 @@ public class MainTabsController implements Initializable {
             } else {
                 counts.put(year, wf.getSize());
             }
-        }
+        });
                 
         XYChart.Series bcseries = new XYChart.Series();
         counts.keySet().stream().forEach((year) -> {

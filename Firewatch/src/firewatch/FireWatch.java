@@ -5,12 +5,10 @@
  */
 package firewatch;
 
-import java.sql.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 /**
@@ -24,7 +22,7 @@ public class FireWatch extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("MainTabs.fxml"));
         
         Scene scene = new Scene(root);
-        
+        stage.setTitle("FireWatch");
         stage.setScene(scene);
         stage.show();
     }
