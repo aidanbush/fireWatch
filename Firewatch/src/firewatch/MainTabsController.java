@@ -184,8 +184,12 @@ public class MainTabsController implements Initializable {
 
                 for(int i =0; i <addedSubList.size(); i++){
                     //update map
-                    System.out.println("stuff: " +i);
-                    System.out.println(Arrays.toString(addedSubList.get(i).getCoordinates()));
+                    Double size = addedSubList.get(i).getSize();
+                    double[] coord = addedSubList.get(i).getCoordinates();
+                    webEngine.executeScript("addLocation(" + coord[0] + "," + coord[1] + "," + size + ")");
+                    
+                    //System.out.println("stuff: " +i);
+                    //System.out.println(Arrays.toString(addedSubList.get(i).getCoordinates()));
                 }
              }
         });
@@ -194,17 +198,9 @@ public class MainTabsController implements Initializable {
     private void submitMapDates(ActionEvent event) {
         noFire.setText("");
         webEngine.executeScript("deleteMarkers()");
-        List<Wildfire> fires = dm.getRangeInclusive(fromDate2.getValue().toString(), 
-        toDate2.getValue().toString());
-        Map<Double, double[]> fire_plots = new HashMap<>();
-        fires.stream().forEach((wf) -> {
-            String cause = wf.getGenCause();
-            Double size = wf.getSize();
-            double[] coord = wf.getCoordinates();
-            fire_plots.put(size, coord);
-            webEngine.executeScript("addLocation(" + coord[0] + "," + coord[1] + "," + size + ")");
-        });
-        if (fire_plots.isEmpty()) {
+        dm.getRangeInclusive(fromDate2.getValue().toString(), 
+                            toDate2.getValue().toString());
+        if (fires.isEmpty()) {
             noFire.setText("No fires");
         } 
     }
