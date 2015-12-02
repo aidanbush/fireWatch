@@ -78,6 +78,8 @@ public class MainTabsController implements Initializable {
     private TabPane tabs;
     @FXML
     private Label noFire;
+    @FXML
+    private Tab map;
     
     
     //fire list tab
@@ -135,6 +137,8 @@ public class MainTabsController implements Initializable {
     }
     @FXML
     private void submitMapDates(ActionEvent event) {
+        noFire.setText("");
+        webEngine.executeScript("deleteMarkers()");
         List<Wildfire> fires = dm.getRangeInclusive(fromDate2.getValue().toString(), 
         toDate2.getValue().toString());
         Map<Double, double[]> fire_plots = new HashMap<>();
@@ -148,11 +152,8 @@ public class MainTabsController implements Initializable {
         if (fire_plots.isEmpty()) {
             noFire.setText("No fires");
         } 
-    
-
     }
 
-    
     @FXML
     private void pieGroupByCause(ActionEvent event) {
         updateCauseData();

@@ -9,7 +9,7 @@
 
 <TabPane fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="506.0" prefWidth="741.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="firewatch.MainTabsController">
   <tabs>
-    <Tab text="Map">
+    <Tab fx:id="map" text="Map">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -59,7 +59,7 @@
                </children></AnchorPane>
         </content>
       </Tab>
-      <Tab text="Fire List">
+      <Tab fx:id="fireList" text="Fire List">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
