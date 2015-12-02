@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -53,7 +52,7 @@ public class DatabaseModel {
             //parse resultSet
             
             try {
-                fires = parseResultSet(rs);
+                parseResultSet(rs,fires);
             } catch (ParseException ex) {
                 Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -74,8 +73,8 @@ public class DatabaseModel {
         return null;
     }
     
-    private static ObservableList<Wildfire> parseResultSet(ResultSet rs) throws SQLException, ParseException {
-        ObservableList<Wildfire> fires = FXCollections.observableArrayList();
+    private static void parseResultSet(ResultSet rs, ObservableList<Wildfire> fires) throws SQLException, ParseException {
+        fires.clear();
         
         while (rs.next()) {
             String fireNumber = rs.getString(1);
@@ -108,7 +107,6 @@ public class DatabaseModel {
             fires.add(fire);
         }
         rs.close();
-        return fires;
     }
 
     public ObservableList<Wildfire> getFires() {

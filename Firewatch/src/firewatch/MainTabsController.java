@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,9 +29,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -89,12 +92,35 @@ public class MainTabsController implements Initializable {
     private DatePicker fireListToDate;
     @FXML
     private Button fireListUpdateButton;
+    
     @FXML
     private TableView<Wildfire> fireListTableView;
+    @FXML
+    private TableColumn<Wildfire, String> fireNumberColumn;
+    @FXML
+    private TableColumn<Wildfire, String> yearColumn;
+    @FXML
+    private TableColumn<Wildfire, String> nameColumn;
+    @FXML
+    private TableColumn<Wildfire, String> sizeColumn;
+    @FXML
+    private TableColumn<Wildfire, String> fireClassColumn;
+    @FXML
+    private TableColumn<Wildfire, String> startDateColumn;
+    @FXML
+    private TableColumn<Wildfire, String> endDateColumn;
+    @FXML
+    private TableColumn<Wildfire, String> weatherColumn;
+    @FXML
+    private TableColumn<Wildfire, String> activeCauseColumn;
+    @FXML
+    private TableColumn<Wildfire, String> generalCauseColumn;
+
     
     @FXML
     private WebView mapWebView;
     WebEngine webEngine;
+    private ObservableList<Wildfire> fires;
 
     /**
      * Initializes the controller class.
@@ -112,6 +138,17 @@ public class MainTabsController implements Initializable {
         final URL urlGoogleMaps = getClass().getResource("GoogleMapsV3.html");
         webEngine.load(urlGoogleMaps.toExternalForm());
         webEngine.setJavaScriptEnabled(true);
+        
+        //setup Columns
+        fireNumberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
+        startDateColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+        endDateColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        weatherColumn.setCellValueFactory(new PropertyValueFactory<>("weather"));
+        activeCauseColumn.setCellValueFactory(new PropertyValueFactory<>("activeCause"));
+        generalCauseColumn.setCellValueFactory(new PropertyValueFactory<>("genCause"));
 
         tabs.getSelectionModel().selectedItemProperty().addListener(
             (ObservableValue<? extends Tab> ov, Tab t, Tab t1) -> {
@@ -133,7 +170,14 @@ public class MainTabsController implements Initializable {
                     break;
             }
         }); 
-   
+        
+        fires = dm.getFires();
+        fireListTableView.setItems(fires);
+        /*fires.addListener((ListChangeListener.Change c) -> {
+            if(c.wasAdded()){
+                //add to map
+            }
+        });*/
     }
     @FXML
     private void submitMapDates(ActionEvent event) {
@@ -290,24 +334,4 @@ public class MainTabsController implements Initializable {
         
         barChart.getData().add(bcseries);
     }
-    
-    //fireList tab
-    @FXML
-    private void fireListUpdate(ActionEvent event){
-        //clear elements
-        
-        //gets the list of fires
-        List<Wildfire> fires = dm.getRangeInclusive(
-                fireListFromDate.getValue().toString(),
-                fireListToDate.getValue().toString());
-        
-        //add to the table
-        for(Wildfire fire : fires){
-            //fireListTableView.
-            //fireListTableView;
-            
-        }
-    }
-    
-    
 }
