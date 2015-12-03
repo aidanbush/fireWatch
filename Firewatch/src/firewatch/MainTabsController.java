@@ -117,8 +117,9 @@ public class MainTabsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        dm = new DatabaseModel("jdbc:sqlite:FireWatch.sqlite");
         try {
-            dm = new DatabaseModel();
+            dm.connect();
         } catch (SQLException e) {
             System.err.println("Error: cannot connect to database");
             Platform.exit();

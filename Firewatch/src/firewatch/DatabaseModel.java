@@ -23,18 +23,27 @@ import javafx.collections.ObservableList;
  * @author aidan
  */
 public class DatabaseModel {
-    private final Connection con;
+    private Connection con;
     private ObservableList<Wildfire> fires;
+    private String conString = "jdbc:sqlite:FireWatch.sqlite";
     
     //TODO make constructor
-    public DatabaseModel() throws SQLException{
+    public DatabaseModel(String conString) {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ConnectSQLite.class.getName()).log(Level.SEVERE, null, ex);
         }
-        con = DriverManager.getConnection("jdbc:sqlite:FireWatch.sqlite");
+
         fires = FXCollections.observableArrayList();
+    }
+    
+    public void connect() throws SQLException {
+        con = DriverManager.getConnection(conString);
+    }
+    
+    public void disconnect() throws SQLException {
+        con.close();
     }
     
     
