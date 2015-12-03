@@ -230,9 +230,6 @@ public class MainTabsController implements Initializable {
     }
     
     private void updateCauseData() {
-        List<Wildfire> fires = dm.getRangeInclusive(fromDate2.getValue().toString(), 
-                toDate2.getValue().toString());
-
         Map<String, Integer> data = new HashMap<>();
         fires.stream().map((wf) -> wf.getGenCause()).filter((cause) -> !(cause == null)).forEach((cause) -> {
             if (data.containsKey(cause)) {
@@ -260,9 +257,6 @@ public class MainTabsController implements Initializable {
     }
     
     private void updateWeatherData() {
-        List<Wildfire> fires = dm.getRangeInclusive(fromDate2.getValue().toString(), 
-                toDate2.getValue().toString());
-        
         Map<String, Integer> data_weather = new HashMap<>();
         fires.stream().map((wf) -> wf.getWeather()).filter((weather) -> !(weather == null)).forEach((weather) -> {
             if (data_weather.containsKey(weather)) {
@@ -292,7 +286,7 @@ public class MainTabsController implements Initializable {
     @FXML
     private void barGroupByNumFires() {
         barChart.getData().clear();
-        List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
+        //List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
 
         Map<Integer, Integer> counts = new HashMap<>();
         fires.stream().map((wf) -> wf.getYear()).forEach((year) -> {
@@ -314,7 +308,7 @@ public class MainTabsController implements Initializable {
     @FXML
     private void barGroupByHaBurned(ActionEvent event) {
         barChart.getData().clear();
-        List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
+        //List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
 
         Map<Integer, Double> counts = new HashMap<>();
         fires.stream().forEach((wf) -> {
