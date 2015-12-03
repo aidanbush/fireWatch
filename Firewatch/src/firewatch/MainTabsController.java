@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -135,6 +136,8 @@ public class MainTabsController implements Initializable {
             dm = new DatabaseModel();
         } catch (SQLException e) {
             System.err.println("Error: cannot connect to database");
+            Platform.exit();
+            System.exit(1);
         }
         fromDate2.setValue(LocalDate.now());
         toDate2.setValue(LocalDate.now());
@@ -143,66 +146,26 @@ public class MainTabsController implements Initializable {
         webEngine.load(urlGoogleMaps.toExternalForm());
         webEngine.setJavaScriptEnabled(true);
         
-        //setup Columns
-        fireNumberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
-        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
-        startDateColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
-        endDateColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
-        weatherColumn.setCellValueFactory(new PropertyValueFactory<>("weather"));
-        activeCauseColumn.setCellValueFactory(new PropertyValueFactory<>("activeCause"));
-        generalCauseColumn.setCellValueFactory(new PropertyValueFactory<>("genCause"));
-
+        setupTableView();
+        
         tabs.getSelectionModel().selectedItemProperty().addListener(
             (ObservableValue<? extends Tab> ov, Tab t, Tab t1) -> {
-            switch (t1.getId()) {
-                case "fireCause":
-                    if (pieWeatherRadio.isSelected()) {
-                        updateWeatherData();
-                    }
-                    else {
-                        updateCauseData();
-                    }
-                    break;
-                case "fireYear":
-                    barGroupByNumFires();
-                    break;
-                case "fireList":
-                    break;
-                default:
-                    break;
-            }
-        }); 
+                updateTab(ov, t, t1);
+        });
         
         fires = dm.getFires();
         fireListTableView.setItems(fires);
         fires.addListener((ListChangeListener.Change<? extends Wildfire> c) -> {
-            while (c.next()) {
-                /*if(c.wasAdded()){
-                    //update map
-                    System.out.println("stuff");
-                }*/
-                List<? extends Wildfire> addedSubList = c.getAddedSubList();
-
-                for(int i =0; i <addedSubList.size(); i++){
-                    //update map
-                    Double size = addedSubList.get(i).getSize();
-                    double[] coord = addedSubList.get(i).getCoordinates();
-                    webEngine.executeScript("addLocation(" + coord[0] + "," + coord[1] + "," + size + ")");
-                    
-                    //System.out.println("stuff: " +i);
-                    //System.out.println(Arrays.toString(addedSubList.get(i).getCoordinates()));
-                }
-             }
+            updateMap(c);
         });
     }
+    
     @FXML
     private void submitMapDates(ActionEvent event) {
         noFire.setText("");
         webEngine.executeScript("deleteMarkers()");
         dm.getRangeInclusive(fromDate2.getValue().toString(), 
-                            toDate2.getValue().toString());
+                toDate2.getValue().toString());
         if (fires.isEmpty()) {
             noFire.setText("No fires");
         } 
@@ -231,21 +194,22 @@ public class MainTabsController implements Initializable {
     
     private void updateCauseData() {
         Map<String, Integer> data = new HashMap<>();
-        fires.stream().map((wf) -> wf.getGenCause()).filter((cause) -> !(cause == null)).forEach((cause) -> {
+        fires.stream().map((wf) -> wf.getGenCause()).filter((cause) ->
+                !(cause == null)).forEach((cause) -> {
             if (data.containsKey(cause)) {
                 data.put(cause, data.get(cause) + 1);
             } else {
                 data.put(cause, 1);
             }
         });
-                
+        
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         data.keySet().stream().map((cause) -> new PieChart.Data(cause, data.get(cause))).forEach((pcd) -> {
             pieChartData.add(pcd);
         });
         
         pieChart.setData(pieChartData);
-
+        
         // set tooltips for pie slices
         DecimalFormat df = new DecimalFormat("#.##");
         pieChart.getData().stream().forEach(pcd -> {
@@ -279,15 +243,12 @@ public class MainTabsController implements Initializable {
                     " (" + df.format(pcd.getPieValue()/fires.size()*100) + "%)");
             Tooltip.install(pcd.getNode(), tooltip);
         });
-        
-        
     }
 
     @FXML
     private void barGroupByNumFires() {
         barChart.getData().clear();
-        //List<Wildfire> fires = dm.getRangeInclusive("1900-01-01", "3000-01-01");
-
+        
         Map<Integer, Integer> counts = new HashMap<>();
         fires.stream().map((wf) -> wf.getYear()).forEach((year) -> {
             if (counts.containsKey(year)) {
@@ -327,5 +288,48 @@ public class MainTabsController implements Initializable {
         });
         
         barChart.getData().add(bcseries);
+    }
+    
+    private void updateMap(ListChangeListener.Change<? extends Wildfire> c){
+        while (c.next()) {
+            List<? extends Wildfire> addedSubList = c.getAddedSubList();
+
+            for(int i =0; i <addedSubList.size(); i++){
+                //update map
+                Double size = addedSubList.get(i).getSize();
+                double[] coord = addedSubList.get(i).getCoordinates();
+                webEngine.executeScript("addLocation(" + coord[0] + "," + coord[1] + "," + size + ")");
+            }
+         }
+    }
+    
+    private void updateTab(ObservableValue<? extends Tab> ov, Tab t, Tab t1){
+        switch (t1.getId()) {
+            case "fireCause":
+                if (pieWeatherRadio.isSelected()) {
+                    updateWeatherData();
+                }
+                else {
+                    updateCauseData();
+                }
+                break;
+            case "fireYear":
+                barGroupByNumFires();
+                break;
+            default:
+                break;
+        }
+    }
+    
+    private void setupTableView(){
+        fireNumberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
+        startDateColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+        endDateColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        weatherColumn.setCellValueFactory(new PropertyValueFactory<>("weather"));
+        activeCauseColumn.setCellValueFactory(new PropertyValueFactory<>("activeCause"));
+        generalCauseColumn.setCellValueFactory(new PropertyValueFactory<>("genCause"));
     }
 }
