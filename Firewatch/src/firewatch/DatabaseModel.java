@@ -25,14 +25,15 @@ import javafx.collections.ObservableList;
 public class DatabaseModel {
     private Connection con;
     private ObservableList<Wildfire> fires;
-    private String conString = "jdbc:sqlite:FireWatch.sqlite";
+    private String conString;
     
     //TODO make constructor
     public DatabaseModel(String conString) {
+        this.conString = conString;
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ConnectSQLite.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Could not create database");
         }
 
         fires = FXCollections.observableArrayList();
