@@ -9,7 +9,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,17 +53,12 @@ public class MainTabsController implements Initializable {
     @FXML
     private RadioButton pieWeatherRadio;
     @FXML
-    private DatePicker fromDate;
-    @FXML
-    private DatePicker toDate;
-    @FXML
     private DatePicker fromDate2;
     @FXML
     private DatePicker toDate2;
     @FXML
     private Button pieUpdateButton;
     
-    private DatabaseModel dm;
     @FXML
     private BarChart<Number, Number> barChart;
     @FXML
@@ -86,14 +80,6 @@ public class MainTabsController implements Initializable {
     @FXML
     private Tab map;
     
-    
-    //fire list tab
-    @FXML
-    private DatePicker fireListFromDate;
-    @FXML
-    private DatePicker fireListToDate;
-    @FXML
-    private Button fireListUpdateButton;
     
     @FXML
     private TableView<Wildfire> fireListTableView;
@@ -117,14 +103,13 @@ public class MainTabsController implements Initializable {
     private TableColumn<Wildfire, String> activeCauseColumn;
     @FXML
     private TableColumn<Wildfire, String> generalCauseColumn;
-
     
     @FXML
     private WebView mapWebView;
     WebEngine webEngine;
     private ObservableList<Wildfire> fires;
-
-
+    private DatabaseModel dm;
+    
     /**
      * Initializes the controller class.
      * @param url

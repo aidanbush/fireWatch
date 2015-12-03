@@ -8,16 +8,16 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="506.0" prefWidth="741.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="firewatch.MainTabsController">
+<TabPane fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="firewatch.MainTabsController">
   <tabs>
     <Tab fx:id="map" text="Map">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <WebView fx:id="mapWebView" layoutX="4.0" prefHeight="466.0" prefWidth="734.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <DatePicker fx:id="fromDate2" layoutX="114.0" layoutY="8.0" />
-                  <DatePicker fx:id="toDate2" layoutX="319.0" layoutY="8.0" />
-                  <Button fx:id="submit" layoutX="525.0" layoutY="8.0" mnemonicParsing="false" onAction="#submitMapDates" text="Submit" />
+                  <DatePicker fx:id="fromDate2" layoutX="114.0" layoutY="8.0" AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="8.0" />
+                  <DatePicker fx:id="toDate2" layoutX="319.0" layoutY="8.0" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="8.0" />
+                  <Button fx:id="submit" layoutX="525.0" layoutY="8.0" mnemonicParsing="false" onAction="#submitMapDates" text="Submit" AnchorPane.leftAnchor="520.0" AnchorPane.topAnchor="8.0" />
                   <Label fx:id="noFire" layoutX="291.0" layoutY="48.0" underline="true">
                      <font>
                         <Font size="15.0" />
@@ -30,12 +30,12 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <PieChart fx:id="pieChart" prefHeight="453.0" prefWidth="631.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="10.0" />
-                  <RadioButton fx:id="pieCauseRadio" layoutX="521.0" layoutY="14.0" mnemonicParsing="false" onAction="#pieGroupByCause" selected="true" text="Cause" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="14.0">
+                  <PieChart fx:id="pieChart" layoutX="14.0" layoutY="29.0" prefHeight="453.0" prefWidth="631.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="20.0" />
+                  <RadioButton fx:id="pieCauseRadio" layoutX="521.0" layoutY="14.0" mnemonicParsing="false" onAction="#pieGroupByCause" selected="true" text="Cause" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="20.0">
                      <toggleGroup>
                         <ToggleGroup fx:id="pieRadioGroup" />
                      </toggleGroup></RadioButton>
-                  <RadioButton fx:id="pieWeatherRadio" layoutX="521.0" layoutY="38.0" mnemonicParsing="false" onAction="#pieGroupByWeather" text="Weather" toggleGroup="$pieRadioGroup" AnchorPane.rightAnchor="3.0" />
+                  <RadioButton fx:id="pieWeatherRadio" layoutX="521.0" layoutY="38.0" mnemonicParsing="false" onAction="#pieGroupByWeather" text="Weather" toggleGroup="$pieRadioGroup" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="40.0" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -43,7 +43,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <BarChart fx:id="barChart" barGap="0.0" layoutX="121.0" layoutY="101.0" legendVisible="false" prefHeight="452.0" prefWidth="579.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="152.0" AnchorPane.topAnchor="10.0">
+                  <BarChart fx:id="barChart" barGap="0.0" layoutX="121.0" layoutY="101.0" legendVisible="false" prefHeight="452.0" prefWidth="579.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="20.0">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -51,12 +51,12 @@
                       <NumberAxis side="LEFT" />
                     </yAxis>
                   </BarChart>
-                  <RadioButton fx:id="numFiresBarRadio" layoutX="598.0" layoutY="14.0" mnemonicParsing="false" onAction="#barGroupByNumFires" selected="true" text="Number of fires" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="14.0">
+                  <RadioButton fx:id="numFiresBarRadio" layoutX="598.0" layoutY="14.0" mnemonicParsing="false" onAction="#barGroupByNumFires" selected="true" text="Number of fires" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                      <toggleGroup>
                         <ToggleGroup fx:id="barRadioGroup" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="burnedBarRadio" layoutX="623.0" layoutY="36.0" mnemonicParsing="false" onAction="#barGroupByHaBurned" text="Hectares burned" toggleGroup="$barRadioGroup" AnchorPane.rightAnchor="16.0" />
+                  <RadioButton fx:id="burnedBarRadio" layoutX="623.0" layoutY="36.0" mnemonicParsing="false" onAction="#barGroupByHaBurned" text="Hectares burned" toggleGroup="$barRadioGroup" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="40.0" />
                </children></AnchorPane>
         </content>
       </Tab>
@@ -64,10 +64,10 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="fireListTableView" layoutX="14.0" layoutY="27.0" prefHeight="433.0" prefWidth="714.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="20.0">
+                  <TableView fx:id="fireListTableView" layoutX="14.0" layoutY="27.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                     <columns>
-                      <TableColumn fx:id="fireNumberColumn" prefWidth="75.0" text="Fire number" />
-                      <TableColumn fx:id="yearColumn" prefWidth="50.0" text="Year" />
+                      <TableColumn fx:id="fireNumberColumn" prefWidth="142.0" text="Fire number" />
+                      <TableColumn fx:id="yearColumn" minWidth="0.0" prefWidth="0.0" text="Year" />
                         <TableColumn fx:id="nameColumn" prefWidth="72.0" text="Name" />
                         <TableColumn fx:id="sizeColumn" prefWidth="75.0" text="Size" />
                         <TableColumn fx:id="fireClassColumn" prefWidth="79.0" text="Fire Class" />
